@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace UI.ModalWindows.Core
 {
     [CreateAssetMenu(menuName = "ModalWindow/Manager")]
@@ -59,7 +64,7 @@ namespace UI.ModalWindows.Core
             string path = $"{Application.dataPath}/{prefabsFolder}";
             path = path.Replace("Assets/Assets/", "Assets/");
             
-            var prefabs = UnityEditorExtensions.LoadFilesInFolder<GameObject>(path, "*.prefab", SearchOption.TopDirectoryOnly);
+            var prefabs = LoadFilesInFolder<GameObject>(path, "*.prefab", SearchOption.TopDirectoryOnly);
 
             Dictionary<string, BaseModalWindow> prefabComponents = new Dictionary<string, BaseModalWindow>();
 
@@ -84,6 +89,18 @@ namespace UI.ModalWindows.Core
             }
         }
 
+        public static T[] LoadFilesInFolder<T>(string folderPath, string pattern, SearchOption searchOption) where T : UnityEngine.Object
+        {
+            string[] files = Directory.GetFiles(folderPath, pattern, searchOption);
+            T[] results = new T[files.Length];
+            for (var index = 0; index < files.Length; index++)
+            {
+                string file = files[index];
+                string assetPath = "Assets" + file.Replace(Application.dataPath, "").Replace('\\', '/');
+                results[index] = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            }
+            return results;
+        }
         private bool ValidPair(MessageToModalPair obj)
         {
             if (obj.prefab == null) return false;

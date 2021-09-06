@@ -15,5 +15,8 @@
     "ishimine",
     "Ishimine"
   ],
-  "hideInEditor": false
+  "hideInEditor": false,
+  "dependencies": {
+    "com.ishimine.runtimescriptablesingleton": "1.0.0"
+  }
 }
