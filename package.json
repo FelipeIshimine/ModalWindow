@@ -1,0 +1,19 @@
+{
+  "name": "com.ishimine.modalwindow",
+  "displayName": "Felipe Ishimine - Modal Window",
+  "description": "Core package for creating modal windows",
+  "version": "1.0.1",
+  "Unity": "2019.1",
+  "author": {
+    "name": "Felipe ishimine",
+    "email": "FelipeIshimine@gmail.com"
+  },
+  "keywords": [
+    "same",
+    "state",
+    "machine",
+    "ishimine",
+    "Ishimine"
+  ],
+  "hideInEditor": false
+}
