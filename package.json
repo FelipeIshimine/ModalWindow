@@ -1,22 +1,13 @@
 {
-  "name": "com.ishimine.modalwindow",
-  "displayName": "Felipe Ishimine - Modal Window",
+  "name": "gameever.modalwindow",
+  "displayName": "Game Ever - Modal Window",
   "description": "Core package for creating modal windows",
   "version": "1.0.2",
-  "Unity": "2019.1",
-  "author": {
-    "name": "Felipe ishimine",
-    "email": "FelipeIshimine@gmail.com"
-  },
+  "Unity": "2019.1", 
   "keywords": [
     "same",
     "state",
-    "machine",
-    "ishimine",
-    "Ishimine"
+    "machine"
   ],
-  "hideInEditor": false,
-  "dependencies": {
-    "com.ishimine.runtimescriptablesingleton": "1.0.0"
-  }
+  "hideInEditor": false
 }
