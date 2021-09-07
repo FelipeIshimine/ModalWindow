@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UI.ModalWindows.Core
-{
     /// <summary>
     /// 
     /// </summary>
@@ -45,4 +43,3 @@ namespace UI.ModalWindows.Core
             }
         }
     }
-}

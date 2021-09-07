@@ -1,9 +1,6 @@
 using System;
-using UI.ModalWindows.Core;
 using UnityEngine;
 
-namespace UI.ModalWindows.Messages
-{
     [System.Serializable]
     public class TextWithImageMessage : BaseModalMessage
     {
@@ -20,4 +17,3 @@ namespace UI.ModalWindows.Messages
             Callback = callback;
         }
     }
-}

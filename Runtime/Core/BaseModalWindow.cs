@@ -1,8 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UI.ModalWindows.Core
-{
     public abstract class BaseModalWindow : MonoBehaviour
     {
         public AnimatedContainer mainContainer;
@@ -31,4 +29,3 @@ namespace UI.ModalWindows.Core
             if(!Application.isPlaying) SetSortOrder(ModalWindowManager.DefaultLayer);
         }
     }
-}

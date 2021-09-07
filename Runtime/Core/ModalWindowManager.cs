@@ -8,8 +8,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace UI.ModalWindows.Core
-{
     [CreateAssetMenu(menuName = "ModalWindow/Manager")]
     public class ModalWindowManager : RuntimeScriptableSingleton<ModalWindowManager>
     {
@@ -148,4 +146,3 @@ namespace UI.ModalWindows.Core
         public string typeName;
         public GameObject prefab;
     }
-}

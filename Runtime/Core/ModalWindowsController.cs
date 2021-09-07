@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UI.ModalWindows.Core
-{
     public class ModalWindowsController : MonoSingleton<ModalWindowsController>
     {
         private readonly Dictionary<string, Queue<BaseModalWindow>> _availableWindows = new Dictionary<string, Queue<BaseModalWindow>>();
@@ -88,4 +86,3 @@ namespace UI.ModalWindows.Core
             OpenMessage(baseModalMessage);
         }
     }
-}

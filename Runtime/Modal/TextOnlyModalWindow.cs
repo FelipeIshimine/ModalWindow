@@ -1,9 +1,5 @@
 using TMPro;
-using UI.ModalWindows.Core;
-using UI.ModalWindows.Messages;
 
-namespace UI.ModalWindows.Modal
-{
     public class TextOnlyModalWindow : GenericModalWindow<TextOnlyModalMessage>
     {
         public TextMeshProUGUI title;
@@ -29,7 +25,4 @@ namespace UI.ModalWindows.Modal
             _message.Callback?.Invoke();
             base.Close();
         }
-
-  
     }
-}
