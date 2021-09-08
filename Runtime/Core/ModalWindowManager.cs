@@ -50,6 +50,11 @@ namespace UI.ModalWindows.Core
 #if UNITY_EDITOR
         private void OnValidate()
         {
+            ScanPrefabs();
+        }
+
+        private void ScanPrefabs()
+        {
             List<MessageToModalPair> validPairs = pairs.FindAll(ValidPair);
             pairs.Clear();
             pairs.AddRange(validPairs);
@@ -59,6 +64,7 @@ namespace UI.ModalWindows.Core
             FillPrefabs();
         }
 
+        [MenuItem("Other/ModalWindows/ScanForPrefabs")]
         private void FillPrefabs()
         {
             string path = $"{Application.dataPath}/{prefabsFolder}";
