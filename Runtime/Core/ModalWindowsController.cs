@@ -14,6 +14,8 @@ namespace GE.ModalWindows
 
         private const float ZOffset = 0.1f;
 
+        public static event Action OnQueueEmpty;
+
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
         {
@@ -63,8 +65,10 @@ namespace GE.ModalWindows
         {
             BaseModalWindow baseModalWindow = Instance._activeModals.Pop(); //Sacamos de la lista de ventanas activas
             baseModalWindow.mainContainer.Close(()=> Instance.EnqueueWindow(baseModalWindow)); //lo hacemos cerrarse y despues encolarse en las ventanas disponibles
-            if(Instance._queue.Count > 0 && Instance._activeModals.Count == 0)
+            if (Instance._queue.Count > 0 && Instance._activeModals.Count == 0)
                 OpenNextMessage();
+            else
+                OnQueueEmpty?.Invoke();
         }
 
         public static void Close(BaseModalWindow baseModalWindow) 
