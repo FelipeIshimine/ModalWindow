@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UI.ModalWindows.Core;
-using UI.ModalWindows.Messages;
 using TMPro;
 
-namespace UI.ModalWindows.Modal
+namespace GE.ModalWindows.Modal
 {
     public class TextWithImageWindow : GenericModalWindow<TextWithImageMessage>
     {
@@ -16,12 +14,12 @@ namespace UI.ModalWindows.Modal
 
         protected override void Initialize()
         {
-            if (Message.pauseTime)
+            if (ModalMessage.pauseTime)
                 Time.timeScale = 0;
 
-            _message = Message;
-            image.sprite = Message.sprite;
-            TextMesh.text = Message.body;
+            _message = ModalMessage;
+            image.sprite = ModalMessage.sprite;
+            TextMesh.text = ModalMessage.body;
         }
 
         public override void Close()

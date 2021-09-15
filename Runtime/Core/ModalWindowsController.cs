@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UI.ModalWindows.Core
+namespace GE.ModalWindows
 {
     public class ModalWindowsController : MonoSingleton<ModalWindowsController>
     {

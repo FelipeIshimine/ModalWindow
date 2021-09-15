@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UI.ModalWindows.Core
+namespace GE.ModalWindows
 {
     public abstract class BaseModalWindow : MonoBehaviour
     {

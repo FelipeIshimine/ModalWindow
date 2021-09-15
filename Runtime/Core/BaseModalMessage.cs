@@ -1,4 +1,4 @@
-﻿namespace UI.ModalWindows.Core
+﻿namespace GE.ModalWindows
 {
     public abstract class BaseModalMessage
     {

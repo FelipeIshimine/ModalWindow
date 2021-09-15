@@ -1,8 +1,7 @@
 using TMPro;
-using UI.ModalWindows.Core;
-using UI.ModalWindows.Messages;
+using GE.ModalWindows;
 
-namespace UI.ModalWindows.Modal
+namespace GE.ModalWindows.Modal
 {
     public class TextOnlyModalWindow : GenericModalWindow<TextOnlyModalMessage>
     {
@@ -11,17 +10,17 @@ namespace UI.ModalWindows.Modal
         private TextOnlyModalMessage _message;
         protected override void Initialize()
         {
-            _message = Message;
-            if (string.IsNullOrEmpty(Message.title))
+            _message = ModalMessage;
+            if (string.IsNullOrEmpty(ModalMessage.title))
             {
                 title.gameObject.SetActive(false);
             }
             else
             {
                 title.gameObject.SetActive(true);
-                title.text = Message.title;
+                title.text = ModalMessage.title;
             }
-            content.text = Message.body;
+            content.text = ModalMessage.body;
         }
 
         public override void Close()

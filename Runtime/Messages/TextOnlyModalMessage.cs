@@ -1,8 +1,7 @@
 using System;
-using UI.ModalWindows.Core;
 using UnityEngine;
 
-namespace UI.ModalWindows.Messages
+namespace GE.ModalWindows
 {
     [System.Serializable]
     public class TextOnlyModalMessage : BaseModalMessage

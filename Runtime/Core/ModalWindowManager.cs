@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace UI.ModalWindows.Core
+namespace GE.ModalWindows
 {
     [CreateAssetMenu(menuName = "ModalWindow/Manager")]
     public class ModalWindowManager : RuntimeScriptableSingleton<ModalWindowManager>

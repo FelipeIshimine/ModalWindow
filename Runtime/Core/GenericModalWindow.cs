@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UI.ModalWindows.Core
+namespace GE.ModalWindows
 {
     /// <summary>
     /// 
@@ -9,11 +9,11 @@ namespace UI.ModalWindows.Core
     /// <typeparam name="T">Message type</typeparam>
     public abstract class GenericModalWindow<T> : BaseModalWindow where T : BaseModalMessage
     {
-        protected T Message { get; private set; }
+        protected T ModalMessage { get; private set; }
 
         public override void RootInitialize(BaseModalMessage baseModalMessage)
         {
-            Message = baseModalMessage as T;
+            ModalMessage = baseModalMessage as T;
             Initialize();
         }
         protected abstract void Initialize();
