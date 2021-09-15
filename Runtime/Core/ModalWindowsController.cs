@@ -12,9 +12,12 @@ namespace GE.ModalWindows
 
         private readonly Stack<BaseModalWindow> _activeModals = new Stack<BaseModalWindow>();
 
+        public static int ActiveModalsCount => Instance._activeModals.Count;
+        public static int QueueCount => Instance._queue.Count;
+
         private const float ZOffset = 0.1f;
 
-        public static event Action OnQueueEmpty;
+        public static event Action OnDone;
 
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
@@ -41,7 +44,7 @@ namespace GE.ModalWindows
         private void EnqueueWindow(BaseModalWindow baseModalWindow)
         {
             baseModalWindow.gameObject.SetActive(false);
-            string messageTypeName = baseModalWindow.GetMessageType().Name;
+            string messageTypeName = baseModalWindow.GetMessageType().FullName;
             Debug.Log($"Enqueue Windows of type: {messageTypeName}");
             _availableWindows[messageTypeName].Enqueue(baseModalWindow);
         }
@@ -53,8 +56,8 @@ namespace GE.ModalWindows
 
         private static void OpenMessage(BaseModalMessage baseModalMessage)
         {
-            Debug.Log(baseModalMessage.GetType().Name);
-            BaseModalWindow baseModalWindow = Instance.DequeueWindow(baseModalMessage.GetType().Name);
+            Debug.Log(baseModalMessage.GetType().FullName);
+            BaseModalWindow baseModalWindow = Instance.DequeueWindow(baseModalMessage.GetType().FullName);
             baseModalWindow.RootInitialize(baseModalMessage);
             Instance._activeModals.Push(baseModalWindow);
             baseModalWindow.SetSortOrder(ModalWindowManager.DefaultLayer + Instance._activeModals.Count);
@@ -63,12 +66,21 @@ namespace GE.ModalWindows
 
         public static void CloseCurrent()
         {
-            BaseModalWindow baseModalWindow = Instance._activeModals.Pop(); //Sacamos de la lista de ventanas activas
-            baseModalWindow.mainContainer.Close(()=> Instance.EnqueueWindow(baseModalWindow)); //lo hacemos cerrarse y despues encolarse en las ventanas disponibles
-            if (Instance._queue.Count > 0 && Instance._activeModals.Count == 0)
-                OpenNextMessage();
-            else
-                OnQueueEmpty?.Invoke();
+            //Sacamos de la lista de ventanas activas
+            BaseModalWindow baseModalWindow = Instance._activeModals.Pop(); 
+            //lo hacemos cerrarse y despues encolarse en las ventanas disponibles
+            baseModalWindow.mainContainer.Close(()=> Instance.EnqueueWindow(baseModalWindow));
+
+            if (Instance._activeModals.Count == 0)
+            {
+                if (Instance._queue.Count > 0)
+                    OpenNextMessage();
+                else
+                {
+                    OnDone?.Invoke();
+                    OnDone = null;
+                }
+            }
         }
 
         public static void Close(BaseModalWindow baseModalWindow) 

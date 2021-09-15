@@ -78,7 +78,7 @@ namespace GE.ModalWindows
             {
                 var prefab = (GameObject)o;
                 var windowComponent = prefab.GetComponent<BaseModalWindow>();
-                prefabComponents.Add(windowComponent.GetMessageType().Name, windowComponent);
+                prefabComponents.Add(windowComponent.GetMessageType().FullName, windowComponent);
             }
 
             for (var index = pairs.Count - 1; index >= 0; index--)
@@ -113,16 +113,17 @@ namespace GE.ModalWindows
             var baseModalWindow = obj.prefab.GetComponent<BaseModalWindow>();
             if (baseModalWindow == null)
                 return false;
-            string messageTypeName = baseModalWindow.GetMessageType().Name;
+            string messageTypeName = baseModalWindow.GetMessageType().FullName;
             return obj.typeName == messageTypeName;
         }
 
         private void TryToAdd(Type type)
         {
-            if (!pairs.Exists(x => x.typeName == type.Name))
-                pairs.Add(new MessageToModalPair(){typeName = type.Name});
+            string fullName = type.FullName;
+            if (!pairs.Exists(x => x.typeName == fullName))
+                pairs.Add(new MessageToModalPair(){typeName = fullName });
 
-            var pair = pairs.Find(x => x.typeName == type.Name);
+            var pair = pairs.Find(x => x.typeName == fullName);
         }
 
         private ModalWindowsController ModalWindowsController => Application.isPlaying && ModalWindowsController.Instance != null?ModalWindowsController.Instance:null;
