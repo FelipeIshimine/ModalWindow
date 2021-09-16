@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace GE.ModalWindows
 {
-    public class ModalWindowsController : MonoSingleton<ModalWindowsController>
+    public class ModalWindowsController : BaseMonoSingleton<ModalWindowsController>
     {
+        public static event Action OnBegin;
+        public static event Action OnDone;
+
         private readonly Dictionary<string, Queue<BaseModalWindow>> _availableWindows = new Dictionary<string, Queue<BaseModalWindow>>();
 
         private readonly Queue<BaseModalMessage> _queue = new Queue<BaseModalMessage>();
@@ -14,10 +17,7 @@ namespace GE.ModalWindows
 
         public static int ActiveModalsCount => Instance._activeModals.Count;
         public static int QueueCount => Instance._queue.Count;
-
-        private const float ZOffset = 0.1f;
-
-        public static event Action OnDone;
+        public static bool IsShowing { get; private set; } = false;
 
         [RuntimeInitializeOnLoadMethod]
         public static void Initialize()
@@ -50,6 +50,11 @@ namespace GE.ModalWindows
         }
         private static void OpenNextMessage()
         {
+            if (!IsShowing)
+            {
+                IsShowing = true;
+                OnBegin?.Invoke();
+            }
             BaseModalMessage baseModalMessage = Instance._queue.Dequeue();
             OpenMessage(baseModalMessage);
         }
@@ -76,11 +81,15 @@ namespace GE.ModalWindows
                 if (Instance._queue.Count > 0)
                     OpenNextMessage();
                 else
-                {
-                    OnDone?.Invoke();
-                    OnDone = null;
-                }
+                    Done();
             }
+        }
+
+        private static void Done()
+        {
+            IsShowing = false;
+            OnDone?.Invoke();
+            OnDone = null;
         }
 
         public static void Close(BaseModalWindow baseModalWindow) 
