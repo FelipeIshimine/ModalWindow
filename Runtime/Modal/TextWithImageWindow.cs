@@ -14,12 +14,12 @@ namespace GE.ModalWindows.Modal
 
         protected override void Initialize()
         {
-            if (ModalMessage.pauseTime)
+            if (Msg.pauseTime)
                 Time.timeScale = 0;
 
-            _message = ModalMessage;
-            image.sprite = ModalMessage.sprite;
-            TextMesh.text = ModalMessage.body;
+            _message = Msg;
+            image.sprite = Msg.sprite;
+            TextMesh.text = Msg.body;
         }
 
         public override void Close()

@@ -10,17 +10,17 @@ namespace GE.ModalWindows.Modal
         private TextOnlyModalMessage _message;
         protected override void Initialize()
         {
-            _message = ModalMessage;
-            if (string.IsNullOrEmpty(ModalMessage.title))
+            _message = Msg;
+            if (string.IsNullOrEmpty(Msg.title))
             {
                 title.gameObject.SetActive(false);
             }
             else
             {
                 title.gameObject.SetActive(true);
-                title.text = ModalMessage.title;
+                title.text = Msg.title;
             }
-            content.text = ModalMessage.body;
+            content.text = Msg.body;
         }
 
         public override void Close()

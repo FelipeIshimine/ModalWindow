@@ -9,11 +9,11 @@ namespace GE.ModalWindows
     /// <typeparam name="T">Message type</typeparam>
     public abstract class GenericModalWindow<T> : BaseModalWindow where T : BaseModalMessage
     {
-        protected T ModalMessage { get; private set; }
+        protected T Msg { get; private set; }
 
         public override void RootInitialize(BaseModalMessage baseModalMessage)
         {
-            ModalMessage = baseModalMessage as T;
+            Msg = baseModalMessage as T;
             Initialize();
         }
         protected abstract void Initialize();
