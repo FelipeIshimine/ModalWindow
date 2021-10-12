@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,13 +23,13 @@ namespace GE.ModalWindows.Modal
             TextMesh.text = Msg.body;
         }
 
-        public override void Close()
+        public override void Close(Action callback)
         {
             if (_message.pauseTime)
                 Time.timeScale = 1;
 
             _message.Callback?.Invoke();
-            base.Close();
+            base.Close(callback);
         }
     }
 }

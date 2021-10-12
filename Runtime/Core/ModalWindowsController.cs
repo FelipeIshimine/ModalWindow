@@ -61,30 +61,17 @@ namespace GE.ModalWindows
 
         private static void OpenMessage(BaseModalMessage baseModalMessage)
         {
-            Debug.Log(baseModalMessage.GetType().FullName);
             BaseModalWindow baseModalWindow = Instance.DequeueWindow(baseModalMessage.GetType().FullName);
+
+            baseModalWindow.OnCloseStart += ModalWindowCloseStart;
+            baseModalWindow.OnCloseEnd += ModalWindowCloseEnd;
+            
             baseModalWindow.RootInitialize(baseModalMessage);
             Instance._activeModals.Push(baseModalWindow);
             baseModalWindow.SetSortOrder(ModalWindowManager.DefaultLayer + Instance._activeModals.Count);
-            baseModalWindow.Open();
+            baseModalWindow.Open(null);
         }
-
-        public static void CloseCurrent()
-        {
-            //Sacamos de la lista de ventanas activas
-            BaseModalWindow baseModalWindow = Instance._activeModals.Pop(); 
-            //lo hacemos cerrarse y despues encolarse en las ventanas disponibles
-            baseModalWindow.mainContainer.Close(()=> Instance.EnqueueWindow(baseModalWindow));
-
-            if (Instance._activeModals.Count == 0)
-            {
-                if (Instance._queue.Count > 0)
-                    OpenNextMessage();
-                else
-                    Done();
-            }
-        }
-
+   
         private static void Done()
         {
             IsShowing = false;
@@ -92,15 +79,36 @@ namespace GE.ModalWindows
             OnDone = null;
         }
 
-        public static void Close(BaseModalWindow baseModalWindow) 
+        private static void ModalWindowCloseStart(BaseModalWindow baseModalWindow)
         {
-            Debug.Log($"Close:{baseModalWindow.gameObject.name}");
-            if(Instance._activeModals.Peek() == baseModalWindow)
-                CloseCurrent();
-            else
-                throw new Exception("Error: Esta intentando cerrar una ventana que no es la actual");
-        }
+            Debug.Log($"CloseStart:{baseModalWindow.gameObject.name}");
+            if (Instance._activeModals.Peek() == baseModalWindow)
+            {
+                //Sacamos de la lista de ventanas activas
+                Instance._activeModals.Pop();
 
+                if (Instance._activeModals.Count == 0)
+                {
+                    if (Instance._queue.Count > 0)
+                        OpenNextMessage();
+                    else
+                        Done();
+                }
+            }
+            else
+                throw new Exception($"Error: Esta intentando cerrar una ventana que no es la actual. \n Actual:{Instance._activeModals.Peek().gameObject.name} Cerrando:{baseModalWindow.gameObject.name}");
+        }
+        
+        private static void ModalWindowCloseEnd(BaseModalWindow baseModalWindow)
+        {
+            baseModalWindow.OnCloseStart -= ModalWindowCloseStart;
+            baseModalWindow.OnCloseEnd -= ModalWindowCloseEnd;
+            
+            //Encolarse en las ventanas disponibles
+            Instance.EnqueueWindow(baseModalWindow);
+        }
+      
+        
         public static void Enqueue(BaseModalMessage baseModalMessage)
         {
             Instance._queue.Enqueue(baseModalMessage);
@@ -112,5 +120,7 @@ namespace GE.ModalWindows
         {
             OpenMessage(baseModalMessage);
         }
+
+       
     }
 }

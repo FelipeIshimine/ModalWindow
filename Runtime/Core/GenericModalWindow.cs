@@ -10,6 +10,7 @@ namespace GE.ModalWindows
     public abstract class GenericModalWindow<T> : BaseModalWindow where T : BaseModalMessage
     {
         protected T Msg { get; private set; }
+        
 
         public override void RootInitialize(BaseModalMessage baseModalMessage)
         {
@@ -17,32 +18,29 @@ namespace GE.ModalWindows
             Initialize();
         }
         protected abstract void Initialize();
-        
-        public override void Open()
+
+
+        public override void Open(Action callback)
         {
-            mainContainer.Open();
+            bgContainer.Open();
+            mainContainer.Open(callback);
         }
         
-        public override void Close()
+        public override void Close(Action callback)
         {
-            ModalWindowsController.Close(this);
+            void OnCloseDone()
+            {
+                callback?.Invoke();
+                CloseEnd(this);
+            }
+            
+            CloseStart(this);
+            bgContainer.Close();
+            mainContainer.Close(OnCloseDone);
         }
 
       
         public override Type GetMessageType() => typeof(T);
         
-        
-        private void OnValidate()
-        {
-            if (!mainContainer)
-            {
-                mainContainer = GetComponentInChildren<AnimatedContainer>();
-                if (!mainContainer)
-                {
-                    mainContainer = new GameObject("MainContainer",typeof(RectTransform), typeof(AnimatedContainer)).GetComponent<AnimatedContainer>();
-                    mainContainer.transform.SetParent(transform);
-                }
-            }
-        }
     }
 }

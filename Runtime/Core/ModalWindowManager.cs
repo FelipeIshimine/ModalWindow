@@ -42,10 +42,6 @@ namespace GE.ModalWindows
             ModalWindowsController.Show(baseModalMessage);
         }
 
-        public void CloseCurrent()
-        {
-            ModalWindowsController.CloseCurrent();
-        }
         
 #if UNITY_EDITOR
         private void OnValidate()

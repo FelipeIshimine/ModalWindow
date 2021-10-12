@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using GE.ModalWindows;
 
@@ -23,10 +24,10 @@ namespace GE.ModalWindows.Modal
             content.text = Msg.body;
         }
 
-        public override void Close()
+        public override void Close(Action callback)
         {
             _message.Callback?.Invoke();
-            base.Close();
+            base.Close(callback);
         }
 
   

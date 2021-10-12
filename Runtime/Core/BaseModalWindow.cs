@@ -5,7 +5,12 @@ namespace GE.ModalWindows
 {
     public abstract class BaseModalWindow : MonoBehaviour
     {
-        public AnimatedContainer mainContainer;
+        public event Action<BaseModalWindow> OnCloseStart;
+        public event Action<BaseModalWindow> OnCloseEnd;
+
+        [SerializeField] protected AnimatedContainer bgContainer;
+    
+        [SerializeField] protected  AnimatedContainer mainContainer;
 
         private UnityEngine.Canvas _canvas;
 
@@ -19,16 +24,26 @@ namespace GE.ModalWindows
         }
         
         public abstract void RootInitialize(BaseModalMessage baseModalMessage);
-    
-        public abstract void Close();
-        public abstract void Open();
+        public void Open() => Open(null);
+        public abstract void Open(Action callback);
+        
+        public void Close() => Close(null);
+        public abstract void Close(Action callback);
+     
         public abstract Type GetMessageType();
 
         public void SetSortOrder(int nSortOrder) => Canvas.sortingOrder = nSortOrder;
 
         private void OnValidate()
         {
-            if(!Application.isPlaying) SetSortOrder(ModalWindowManager.DefaultLayer);
+            if(!Application.isPlaying) 
+                SetSortOrder(ModalWindowManager.DefaultLayer);
+
+          
         }
+
+        protected void CloseStart(BaseModalWindow obj) => OnCloseStart?.Invoke(obj);
+
+        protected void CloseEnd(BaseModalWindow obj) => OnCloseEnd?.Invoke(obj);
     }
 }
