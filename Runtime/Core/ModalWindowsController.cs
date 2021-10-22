@@ -15,6 +15,8 @@ namespace GE.ModalWindows
 
         private readonly Stack<BaseModalWindow> _activeModals = new Stack<BaseModalWindow>();
 
+        public static BaseModalWindow CurrentActiveModal => Instance._activeModals.Peek();
+
         public static int ActiveModalsCount => Instance._activeModals.Count;
         public static int QueueCount => Instance._queue.Count;
         public static bool IsShowing { get; private set; } = false;
