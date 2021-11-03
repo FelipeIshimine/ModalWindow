@@ -54,6 +54,7 @@ namespace GE.ModalWindows
         {
             if (!IsShowing)
             {
+                Debug.Log("ModalWindowsController: BEGIN");
                 IsShowing = true;
                 OnBegin?.Invoke();
             }
@@ -76,6 +77,7 @@ namespace GE.ModalWindows
    
         private static void Done()
         {
+            Debug.Log("ModalWindowsController: DONE");
             IsShowing = false;
             OnDone?.Invoke();
             OnDone = null;
