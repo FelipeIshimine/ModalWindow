@@ -64,6 +64,7 @@ namespace GE.ModalWindows
 
         private static void OpenMessage(BaseModalMessage baseModalMessage)
         {
+            
             BaseModalWindow baseModalWindow = Instance.DequeueWindow(baseModalMessage.GetType().FullName);
 
             baseModalWindow.OnCloseStart += ModalWindowCloseStart;
@@ -71,6 +72,8 @@ namespace GE.ModalWindows
             
             baseModalWindow.RootInitialize(baseModalMessage);
             Instance._activeModals.Push(baseModalWindow);
+            Debug.Log($"ModalWindowController PUSH:{baseModalWindow}");
+
             baseModalWindow.SetSortOrder(ModalWindowManager.DefaultLayer + Instance._activeModals.Count);
             baseModalWindow.Open(null);
         }
@@ -91,7 +94,9 @@ namespace GE.ModalWindows
             if (Instance._activeModals.Peek() == baseModalWindow)
             {
                 //Sacamos de la lista de ventanas activas
-                Instance._activeModals.Pop();
+                
+                var modal = Instance._activeModals.Pop();
+                Debug.Log($"ModalWindowController POP:{modal}");
 
                 if (Instance._activeModals.Count == 0)
                 {

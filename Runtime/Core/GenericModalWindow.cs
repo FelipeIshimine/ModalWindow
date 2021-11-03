@@ -20,7 +20,6 @@ namespace GE.ModalWindows
         }
         protected abstract void Initialize();
 
-
         public override void Open(Action callback)
         {
             if (_isOpen) throw new Exception($"{this} Modal is Already Open");
