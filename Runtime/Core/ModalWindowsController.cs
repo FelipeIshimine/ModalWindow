@@ -85,6 +85,8 @@ namespace GE.ModalWindows
 
         private static void ModalWindowCloseStart(BaseModalWindow baseModalWindow)
         {
+            baseModalWindow.OnCloseStart -= ModalWindowCloseStart;
+
             Debug.Log($"CloseStart:{baseModalWindow.gameObject.name}");
             if (Instance._activeModals.Peek() == baseModalWindow)
             {
@@ -105,7 +107,6 @@ namespace GE.ModalWindows
         
         private static void ModalWindowCloseEnd(BaseModalWindow baseModalWindow)
         {
-            baseModalWindow.OnCloseStart -= ModalWindowCloseStart;
             baseModalWindow.OnCloseEnd -= ModalWindowCloseEnd;
             
             //Encolarse en las ventanas disponibles
