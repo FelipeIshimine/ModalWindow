@@ -15,8 +15,14 @@ namespace GE.ModalWindows
 
         private readonly Stack<BaseModalWindow> _activeModals = new Stack<BaseModalWindow>();
 
-        public static BaseModalWindow CurrentActiveModal => Instance._activeModals.Peek();
-
+        public static BaseModalWindow CurrentActiveModal
+        {
+            get
+            {
+                Debug.Log("CurrentActiveModal PEEK");
+                return Instance._activeModals.Peek();
+            }
+        }
         public static int ActiveModalsCount => Instance._activeModals.Count;
         public static int QueueCount => Instance._queue.Count;
         public static bool IsShowing { get; private set; } = false;
@@ -91,7 +97,7 @@ namespace GE.ModalWindows
             baseModalWindow.OnCloseStart -= ModalWindowCloseStart;
 
             Debug.Log($"CloseStart:{baseModalWindow.gameObject.name}");
-            if (Instance._activeModals.Peek() == baseModalWindow)
+            if (CurrentActiveModal == baseModalWindow)
             {
                 //Sacamos de la lista de ventanas activas
                 
@@ -107,7 +113,7 @@ namespace GE.ModalWindows
                 }
             }
             else
-                throw new Exception($"Error: Esta intentando cerrar una ventana que no es la actual. \n Actual:{Instance._activeModals.Peek().gameObject.name} Cerrando:{baseModalWindow.gameObject.name}");
+                throw new Exception($"Error: Esta intentando cerrar una ventana que no es la actual. \n Actual:{CurrentActiveModal.gameObject.name} Cerrando:{baseModalWindow.gameObject.name}");
         }
         
         private static void ModalWindowCloseEnd(BaseModalWindow baseModalWindow)
