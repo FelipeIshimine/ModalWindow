@@ -6,8 +6,9 @@ namespace GE.ModalWindows
 {
     public class ModalWindowsController : BaseMonoSingleton<ModalWindowsController>
     {
-        public static event Action OnBegin;
-        public static event Action OnDone;
+        public static bool IsBusy => QueueCount > 0 || ActiveModalsCount > 0;
+        private static event Action OnBegin;
+        private static event Action OnDone;
 
         private readonly Dictionary<string, Queue<BaseModalWindow>> _availableWindows = new Dictionary<string, Queue<BaseModalWindow>>();
 
@@ -137,6 +138,15 @@ namespace GE.ModalWindows
             OpenMessage(baseModalMessage);
         }
 
-       
+        /// <summary>
+        /// El evento se borra luego de ejecutarse
+        /// </summary>
+        /// <param name="callback"></param>
+        public static void RegisterOnDone(Action callback) => OnDone += callback;
+        /// <summary>
+        /// El evento se borra luego de ejecutarse
+        /// </summary>
+        /// <param name="callback"></param>
+        public static void RegisterOnBegin(Action callback) => OnBegin += callback;
     }
 }
