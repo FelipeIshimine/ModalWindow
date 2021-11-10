@@ -135,11 +135,8 @@ namespace GE.ModalWindows
 
         public static GameObject GetWindow(string messageTypeName)
         {
-            Debug.Log(messageTypeName);
-            Debug.Log(Instance == null);
             if (Instance._typeToPrefab.TryGetValue(messageTypeName, out GameObject go))
                 return go;
-            Debug.Log( Instance.pairs == null);
             go = Instance.pairs.Find(x => x.typeName == messageTypeName).prefab;
             return go;
         }

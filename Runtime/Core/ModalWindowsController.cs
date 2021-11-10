@@ -54,7 +54,6 @@ namespace GE.ModalWindows
         {
             if (!IsShowing)
             {
-                Debug.Log("ModalWindowsController: BEGIN");
                 IsShowing = true;
                 OnBegin?.Invoke();
             }
@@ -72,7 +71,6 @@ namespace GE.ModalWindows
             
             baseModalWindow.RootInitialize(baseModalMessage);
             Instance._activeModals.Push(baseModalWindow);
-            Debug.Log($"ModalWindowController PUSH:{baseModalWindow}");
 
             baseModalWindow.SetSortOrder(ModalWindowManager.DefaultLayer + Instance._activeModals.Count);
             baseModalWindow.Open(null);
@@ -80,7 +78,6 @@ namespace GE.ModalWindows
    
         private static void Done()
         {
-            Debug.Log("ModalWindowsController: DONE");
             IsShowing = false;
             OnDone?.Invoke();
             OnDone = null;
@@ -94,9 +91,7 @@ namespace GE.ModalWindows
             if (CurrentActiveModal == baseModalWindow)
             {
                 //Sacamos de la lista de ventanas activas
-                
                 var modal = Instance._activeModals.Pop();
-                Debug.Log($"ModalWindowController POP:{modal}");
 
                 if (Instance._activeModals.Count == 0)
                 {
