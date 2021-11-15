@@ -34,13 +34,13 @@ namespace GE.ModalWindows
 
         public void SetSortOrder(int nSortOrder) => Canvas.sortingOrder = nSortOrder;
 
+        #if UNITY_EDITOR
         private void OnValidate()
         {
-            if(!Application.isPlaying) 
+            if(!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) 
                 SetSortOrder(ModalWindowManager.DefaultLayer);
-
-          
         }
+        #endif
 
         protected void CloseStart(BaseModalWindow obj) => OnCloseStart?.Invoke(obj);
 
