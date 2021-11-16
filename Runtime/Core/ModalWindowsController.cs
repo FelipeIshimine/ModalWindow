@@ -33,6 +33,9 @@ namespace GE.ModalWindows
             Debug.Log($"DequeueWindow({messageTypeName})");
             if (_availableWindows.TryGetValue(messageTypeName, out Queue<BaseModalWindow> queue))
             {
+                if (queue.Count == 0)
+                    queue.Enqueue(Instantiate(ModalWindowManager.GetWindow(messageTypeName)).GetComponent<BaseModalWindow>());
+                
                 var window = queue.Dequeue();
                 window.gameObject.SetActive(true);
                 return window;
