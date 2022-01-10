@@ -29,7 +29,5 @@ namespace GE.ModalWindows.Modal
             _message.Callback?.Invoke();
             base.Close(callback);
         }
-
-  
     }
 }
