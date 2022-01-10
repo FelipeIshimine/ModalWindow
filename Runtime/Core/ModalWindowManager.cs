@@ -19,9 +19,8 @@ namespace GE.ModalWindows
         public static int DefaultLayer => Instance.defaultLayer;
         public List<MessageToModalPair> pairs = new List<MessageToModalPair>();
 
-        private Dictionary<string, GameObject> _typeToPrefab = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, GameObject> _typeToPrefab = new Dictionary<string, GameObject>();
 
-        
         public void Enqueue(BaseModalMessage baseModalMessage)
         {
             if (!Application.isPlaying)
@@ -60,7 +59,6 @@ namespace GE.ModalWindows
             FillPrefabs();
         }
 
-        [MenuItem("Other/ModalWindows/ScanForPrefabs")]
         private void FillPrefabs()
         {
             string path = $"{Application.dataPath}/{prefabsFolder}";
@@ -70,10 +68,9 @@ namespace GE.ModalWindows
 
             Dictionary<string, BaseModalWindow> prefabComponents = new Dictionary<string, BaseModalWindow>();
 
-            foreach (var o in prefabs)
+            foreach (var go in prefabs)
             {
-                var prefab = (GameObject)o;
-                var windowComponent = prefab.GetComponent<BaseModalWindow>();
+                var windowComponent = go.GetComponent<BaseModalWindow>();
                 prefabComponents.Add(windowComponent.GetMessageType().FullName, windowComponent);
             }
 
@@ -138,6 +135,7 @@ namespace GE.ModalWindows
             if (Instance._typeToPrefab.TryGetValue(messageTypeName, out GameObject go))
                 return go;
             go = Instance.pairs.Find(x => x.typeName == messageTypeName).prefab;
+            Instance._typeToPrefab.Add(messageTypeName, go);
             return go;
         }
     }
