@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace GE.ModalWindows
 {
+    
     public abstract class BaseModalWindow : MonoBehaviour
     {
         public event Action<BaseModalWindow> OnCloseStart;

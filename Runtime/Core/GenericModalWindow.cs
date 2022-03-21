@@ -12,6 +12,8 @@ namespace GE.ModalWindows
         protected T Msg { get; private set; }
 
         private bool _isOpen = false;
+
+        private Action _openCallback;
         
         public override void RootInitialize(BaseModalMessage baseModalMessage)
         {
@@ -25,7 +27,9 @@ namespace GE.ModalWindows
             if (_isOpen) throw new Exception($"{this} Modal is Already Open");
             _isOpen = true;
             bgContainer.Open();
-            mainContainer.Open(callback);
+            _openCallback = OnOpenDone;
+            _openCallback += callback;
+            mainContainer.Open(_openCallback);
         }
         
         public override void Close(Action callback)
@@ -47,6 +51,8 @@ namespace GE.ModalWindows
 
       
         public override Type GetMessageType() => typeof(T);
+
+        protected virtual void OnOpenDone() { }
         
     }
 }

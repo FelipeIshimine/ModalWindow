@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 
 namespace GE.ModalWindows
@@ -59,6 +61,7 @@ namespace GE.ModalWindows
             {
                 IsShowing = true;
                 OnBegin?.Invoke();
+                OnBegin = null;
             }
             BaseModalMessage baseModalMessage = Instance._queue.Dequeue();
             OpenMessage(baseModalMessage);
@@ -116,16 +119,16 @@ namespace GE.ModalWindows
             Instance.EnqueueWindow(baseModalWindow);
         }
       
-        
         public static void Enqueue(BaseModalMessage baseModalMessage)
         {
+            if(!Application.isPlaying) return;
             Instance._queue.Enqueue(baseModalMessage);
             if(Instance._activeModals.Count == 0)
                 OpenNextMessage();
         }
-
         public static void Show(BaseModalMessage baseModalMessage)
         {
+            if(!Application.isPlaying) return;
             OpenMessage(baseModalMessage);
         }
 

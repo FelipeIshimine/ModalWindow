@@ -21,6 +21,7 @@ namespace GE.ModalWindows
 
         private readonly Dictionary<string, GameObject> _typeToPrefab = new Dictionary<string, GameObject>();
 
+        [Sirenix.OdinInspector.Button]
         public void Enqueue(BaseModalMessage baseModalMessage)
         {
             if (!Application.isPlaying)
@@ -30,7 +31,7 @@ namespace GE.ModalWindows
             }
             ModalWindowsController.Enqueue(baseModalMessage);
         }
-
+        [Sirenix.OdinInspector.Button]
         public void Show(BaseModalMessage baseModalMessage)
         {
             if (!Application.isPlaying)
