@@ -13,7 +13,6 @@ namespace GE.ModalWindows
 
         private bool _isOpen = false;
 
-        private Action _openCallback;
         
         public override void RootInitialize(BaseModalMessage baseModalMessage)
         {
@@ -27,9 +26,9 @@ namespace GE.ModalWindows
             if (_isOpen) throw new Exception($"{this} Modal is Already Open");
             _isOpen = true;
             bgContainer.Open();
-            _openCallback = OnOpenDone;
-            _openCallback += callback;
-            mainContainer.Open(_openCallback);
+            Action openCallback = OnOpenDone;
+            openCallback += callback;
+            mainContainer.Open(openCallback);
         }
         
         public override void Close(Action callback)
@@ -37,16 +36,13 @@ namespace GE.ModalWindows
             if (!_isOpen) throw new Exception($"{this} Modal is Already Closed");
             
             _isOpen = false;
-
-            void OnCloseDone()
-            {
-                callback?.Invoke();
-                CloseEnd(this);
-            }
+            
+            Action closeCallback = OnCloseDone;
+            closeCallback += callback;
             
             CloseStart(this);
             bgContainer.Close();
-            mainContainer.Close(OnCloseDone);
+            mainContainer.Close(closeCallback);
         }
 
       
@@ -54,5 +50,9 @@ namespace GE.ModalWindows
 
         protected virtual void OnOpenDone() { }
         
+        protected virtual void OnCloseDone()
+        {
+            CloseEnd(this);
+        }
     }
 }
