@@ -65,14 +65,16 @@ namespace GE.ModalWindows
             string path = $"{Application.dataPath}/{prefabsFolder}";
             path = path.Replace("Assets/Assets/", "Assets/");
             
-            var prefabs = LoadFilesInFolder<GameObject>(path, "*.prefab", SearchOption.TopDirectoryOnly);
+            var prefabs = LoadFilesInFolder<GameObject>(path, "*.prefab", SearchOption.AllDirectories);
 
             Dictionary<string, BaseModalWindow> prefabComponents = new Dictionary<string, BaseModalWindow>();
 
             foreach (var go in prefabs)
             {
+                if(!go)
+                    continue;
                 var windowComponent = go.GetComponent<BaseModalWindow>();
-                prefabComponents.Add(windowComponent.GetMessageType().FullName, windowComponent);
+                if(windowComponent) prefabComponents.Add(windowComponent.GetMessageType().FullName, windowComponent);
             }
 
             for (var index = pairs.Count - 1; index >= 0; index--)
