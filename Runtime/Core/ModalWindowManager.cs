@@ -84,6 +84,7 @@ namespace GE.ModalWindows
                 {
                     var toModalPair = messageToModalPair;
                     Debug.Log(messageToModalPair.typeName);
+                    if(!prefabComponents.ContainsKey(messageToModalPair.typeName)) continue;
                     toModalPair.prefab = prefabComponents[messageToModalPair.typeName].gameObject;
                     pairs.Remove(messageToModalPair);
                     pairs.Add(toModalPair);
