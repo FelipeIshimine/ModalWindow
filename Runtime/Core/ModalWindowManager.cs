@@ -12,6 +12,9 @@ namespace GE.ModalWindows
 {
     [CreateAssetMenu(menuName = "ModalWindow/Manager")]
     public class ModalWindowManager : RuntimeScriptableSingleton<ModalWindowManager>
+#if UNITY_EDITOR
+        , ISerializationCallbackReceiver
+#endif
     {
         public string prefabsFolder;
 
@@ -44,11 +47,6 @@ namespace GE.ModalWindows
 
         
 #if UNITY_EDITOR
-        private void OnValidate()
-        {
-            ScanPrefabs();
-        }
-
         private void ScanPrefabs()
         {
             List<MessageToModalPair> validPairs = pairs.FindAll(ValidPair);
@@ -64,8 +62,17 @@ namespace GE.ModalWindows
         {
             string path = $"{Application.dataPath}/{prefabsFolder}";
             path = path.Replace("Assets/Assets/", "Assets/");
-            
-            var prefabs = LoadFilesInFolder<GameObject>(path, "*.prefab", SearchOption.AllDirectories);
+
+            GameObject[] prefabs;
+            try
+            {
+                prefabs = LoadFilesInFolder<GameObject>(path, "*.prefab", SearchOption.AllDirectories);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(e);
+                throw;
+            }
 
             Dictionary<string, BaseModalWindow> prefabComponents = new Dictionary<string, BaseModalWindow>();
 
@@ -124,6 +131,14 @@ namespace GE.ModalWindows
 
         private ModalWindowsController ModalWindowsController => Application.isPlaying && ModalWindowsController.Instance != null?ModalWindowsController.Instance:null;
 
+        public void OnBeforeSerialize()
+        {
+            ScanPrefabs();
+        }
+
+        public void OnAfterDeserialize()
+        {
+        }
 #endif
         private static IEnumerable<Type> GetAllSubclassTypes<T>() 
         {
@@ -141,6 +156,8 @@ namespace GE.ModalWindows
             Instance._typeToPrefab.Add(messageTypeName, go);
             return go;
         }
+
+       
     }
 
     [System.Serializable]
