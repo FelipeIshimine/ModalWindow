@@ -133,7 +133,6 @@ namespace GE.ModalWindows
 
         public void OnBeforeSerialize()
         {
-            ScanPrefabs();
         }
 
         public void OnAfterDeserialize()
